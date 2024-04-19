@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hangman Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <style>
+        .guess {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 5px;
+        }
+        .input {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+</style>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title is-1 has-text-centered">Strain Seeker</h1>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="box has-text-centered">
+                <h2 class="title is-2">Guesses left</h2>
+                <h1 class="title is-1" id="guesses-left">13</h1>
+            </div>
+    <section class="section">
+        <div class="columns is-multiline">
+            <div class="column is-half">
+                <div class="box has-text-centered">
+                    <h3 class="title is-4">Phylum</h3>
+                    <h2 class="title is-3 guess" id="phylum"></h2>
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="box has-text-centered">
+                    <h3 class="title is-4">Class</h3>
+                    <h2 class="title is-3 guess" id="class"></h2>
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="box has-text-centered">
+                    <h3 class="title is-4">Order</h3>
+                    <h2 class="title is-3 guess" id="order"></h2>
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="box has-text-centered">
+                    <h2 class="title is-4">Family</h2>
+                    <p class="title is-3 guess" id="family"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    </section>
+        <div class="container">
+            <div class="box has-text-centered">
+            <h1 class="title is-1 guess" id="hangman-word"></h1>
+            </div>
+            <div class="buttons are-large is-centered">
+            <button class="button letter" id="button-A">A</button>
+            <button class="button letter" id="button-B">B</button>
+            <button class="button letter" id="button-C">C</button>
+            <button class="button letter" id="button-D">D</button>
+            <button class="button letter" id="button-E">E</button>
+            <button class="button letter" id="button-F">F</button>
+            <button class="button letter" id="button-G">G</button>
+            <button class="button letter" id="button-H">H</button>
+            <button class="button letter" id="button-I">I</button>
+            </div>
+            <div class="buttons are-large is-centered">
+            <button class="button letter" id="button-J">J</button>
+            <button class="button letter" id="button-K">K</button>
+            <button class="button letter" id="button-L">L</button>
+            <button class="button letter" id="button-M">M</button>
+            <button class="button letter" id="button-N">N</button>
+            <button class="button letter" id="button-O">O</button>
+            <button class="button letter" id="button-P">P</button>
+            <button class="button letter" id="button-Q">Q</button>
+            <button class="button letter" id="button-R">R</button>
+            </div>
+            <div class="buttons are-large is-centered">
+            <button class="button letter" id="button-S">S</button>
+            <button class="button letter" id="button-T">T</button>
+            <button class="button letter" id="button-U">U</button>
+            <button class="button letter" id="button-V">V</button>
+            <button class="button letter" id="button-W">W</button>
+            <button class="button letter" id="button-X">X</button>
+            <button class="button letter" id="button-Y">Y</button>
+            <button class="button letter" id="button-Z">Z</button>
+            </div>
+            <div class="field">
+                <label class="label" for="guess-word">Guess the strain</label>
+                <div class="control">
+                    <input class="input" type="text" id="guess-word" placeholder="Enter your guess here">
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-primary" id="submit-guess">Submit Guess</button>
+            </div>
+        </div>
+    </section>
+</body>
+<script src="hangman.js"></script>
+</html>
