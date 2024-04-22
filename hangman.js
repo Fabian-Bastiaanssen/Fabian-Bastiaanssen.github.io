@@ -15,8 +15,8 @@ titles.forEach(title => {
     // store the original word in the title's data attribute
     title.dataset.word = word.toUpperCase();
 });
-let guessWordInput = document.getElementById('guess-word').trim();
-let hangmanWord = document.getElementById('hangman-word').trim();
+let guessWordInput = document.getElementById('guess-word');
+let hangmanWord = document.getElementById('hangman-word');
 let word = hangmanWord.dataset.word;
 guessWordInput.setAttribute('maxlength', word.length);
 
