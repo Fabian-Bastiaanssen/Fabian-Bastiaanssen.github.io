@@ -93,13 +93,16 @@ guessButton.addEventListener('click', function() {
         correctGuess = true;
     }
     let guessesLeft = document.getElementById('guesses-left');
-    guessesLeft.textContent = parseInt(guessesLeft.textContent) - 1;
     // If the guessed word is correct, fill the input field green and reveal all the words
     if (correctGuess) {
         guessInput.style.backgroundColor = 'green';
         titles.forEach(title => {
             title.textContent = title.dataset.word;
         });
+    }
+    else{
+        guessesLeft.textContent = parseInt(guessesLeft.textContent) - 1;
+
     }
     if (parseInt(guessesLeft.textContent) === 1) {
         // Disable all buttons
