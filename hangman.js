@@ -15,8 +15,8 @@ titles.forEach(title => {
     // store the original word in the title's data attribute
     title.dataset.word = word.toUpperCase();
 });
-let guessWordInput = document.getElementById('guess-word');
-let hangmanWord = document.getElementById('hangman-word');
+let guessWordInput = document.getElementById('guess-word').trim();
+let hangmanWord = document.getElementById('hangman-word').trim();
 let word = hangmanWord.dataset.word;
 guessWordInput.setAttribute('maxlength', word.length);
 
@@ -80,11 +80,11 @@ let guessButton = document.getElementById('submit-guess');
 
 // Add event listener to the submit button
 guessButton.addEventListener('click', function() {
-    let guessedWord = guessInput.value.toUpperCase();
+    let guessedWord = guessInput.value.toUpperCase().trim();
     let correctGuess = false;
 
     // Check if the guessed word matches the hangman-word id
-    let hangmanWord = document.getElementById('hangman-word');
+    let hangmanWord = document.getElementById('hangman-word').trim();
     let word = hangmanWord.dataset.word;
     guessWordInput.setAttribute('maxlength', word.length);
     // If the guessed word matches, reveal the word and mark it as correct
