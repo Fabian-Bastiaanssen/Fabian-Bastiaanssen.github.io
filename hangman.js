@@ -109,22 +109,21 @@ function checkGameStatus() {
         guessButton.disabled = true;
 
         resultTitle.textContent = 'Congratulations!';
-        resultMessage.textContent = `
+        resultMessage.innerHTML = `
         You won using only ${finalguesses} guess(es).
         Your win streak is ${winStreaks}.
         Your win percentage is ${winPercentage * 100}%.
-        Find more about this strain at ${resultMessages.dataset.address}
+        Find more about this strain at <a href="${resultMessages.dataset.address}" target="_blank">${resultMessages.dataset.address}</a>
         `;
     } else if (parseInt(guessesLeft.textContent) === 0){
         // No guesses left, user lost
         resultBox.classList.remove('is-hidden');
         guessButton.disabled = true;
-
+        beatPuzzle = false;
         let resultMessage = document.getElementById('winner-subtitle');
         let resultTitle = document.getElementById('winner-title');
         resultTitle.textContent = 'Game Over!';
-        resultMessage.textContent = `The strain was "${word}". Find more about this strain at ${resultMessages.dataset.address}. Better luck next time!`;
-    }
+        resultMessage.innerHTML = `The strain was "${word}". Find more about this strain at <a href="${resultMessages.dataset.address}" target="_blank">${resultMessages.dataset.address}</a>. Better luck next time!`;
 }
 
 // Add event listener to each button
