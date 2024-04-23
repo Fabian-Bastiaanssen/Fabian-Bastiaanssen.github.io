@@ -76,7 +76,6 @@ function checkGameStatus() {
     let word = hangmanWord.dataset.word;
     let guessesLeft = document.getElementById('guesses-left');
     let resultBox = document.getElementById('winner-box');
-    guessButton.disabled = true;
     let resultMessages = document.getElementById('winner-subtitle');
 
 
@@ -88,7 +87,7 @@ function checkGameStatus() {
     if (today.getTime() - lastBeatPuzzle.getTime() <= oneDay && beatPuzzle) {
         winStreaks++;
     }
-    else {
+    else if (parseInt(guessesLeft.textContent) ===0){
         winStreaks = 0;
     }
     hangmanWord.innerHTML = `<a href="${resultMessages.dataset.address}">${hangmanWord.textContent}</a>`;
@@ -105,6 +104,7 @@ function checkGameStatus() {
         resultBox.classList.remove('is-hidden');
         let resultMessage = document.getElementById('winner-subtitle');
         let resultTitle = document.getElementById('winner-title');
+        guessButton.disabled = true;
 
         resultTitle.textContent = 'Congratulations!';
         resultMessage.textContent = `
@@ -112,9 +112,11 @@ function checkGameStatus() {
         Your win streak is ${winStreaks}.
         Your win percentage is ${winPercentage * 100}%.
         `;
-    } else if (guessesLeft === 0){
+    } else if (parseInt(guessesLeft.textContent) === 0){
         // No guesses left, user lost
         resultBox.classList.remove('is-hidden');
+        guessButton.disabled = true;
+
         let resultMessage = document.getElementById('winner-subtitle');
         let resultTitle = document.getElementById('winner-title');
         resultTitle.textContent = 'Game Over!';
