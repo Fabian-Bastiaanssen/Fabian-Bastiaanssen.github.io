@@ -44,7 +44,7 @@ if (beatPuzzle && params.get('rowType') !== 'random') {
         });
     
 }
-
+beatPuzzle=false;
 
 // Replace the text in each title with underscores
 titles.forEach(title => {
