@@ -124,7 +124,7 @@ function checkGameStatus() {
         let resultTitle = document.getElementById('winner-title');
         resultTitle.textContent = 'Game Over!';
         resultMessage.innerHTML = `The strain was "${word}". Find more about this strain at <a href="${resultMessages.dataset.address}" target="_blank">${resultMessages.dataset.address}</a>. Better luck next time!`;
-}
+}}
 
 // Add event listener to each button
 buttons.forEach(button => {
