@@ -112,7 +112,7 @@ function checkGameStatus() {
         Your win streak is ${winStreaks}.
         Your win percentage is ${winPercentage * 100}%.
         `;
-    } else{
+    } else if (guessesLeft === 0){
         // No guesses left, user lost
         resultBox.classList.remove('is-hidden');
         let resultMessage = document.getElementById('winner-subtitle');
