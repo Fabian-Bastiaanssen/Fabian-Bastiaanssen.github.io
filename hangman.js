@@ -13,8 +13,6 @@ cookies.forEach(cookie => {
     let [key, value] = cookie.trim().split('=');
     if (key === 'beatPuzzle') {
         beatPuzzle = value === 'true';
-    } else if (key === 'totalGuessesUsed') {
-        totalGuessesUsed = parseInt(value);
     } else if (key === 'winStreaks') {
         winStreaks = parseInt(value);
     } else if (key === 'lastBeatPuzzle') {
@@ -84,16 +82,19 @@ function checkGameStatus() {
     beatPuzzle = true;
     let today = new Date();
     let oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
-    if (today.getTime() - lastBeatPuzzle.getTime() <= oneDay && beatPuzzle) {
+    if (today.getTime() - lastBeatPuzzle.getTime() <= oneDay && beatPuzzle && params.get('rowType') !== 'random')) {
         winStreaks++;
+        scoreArray.push(finalguesses);
+        winArray.push(beatPuzzle);
     }
-    else if (parseInt(guessesLeft.textContent) ===0){
+    else if (parseInt(guessesLeft.textContent) ===0 && params.get('rowType') !== 'random')){
         winStreaks = 0;
+        scoreArray.push(finalguesses);
+        winArray.push(beatPuzzle);
     }
-    hangmanWord.innerHTML = `<a href="${resultMessages.dataset.address}">${hangmanWord.textContent}</a>`;
+    
 
-    scoreArray.push(totalGuessesUsed);
-    winArray.push(beatPuzzle);
+
     // count the amount of wins in the winArray and divide by the length of the array
     let winPercentage = winArray.filter(Boolean).length / winArray.length;
     // save the cookies
@@ -111,6 +112,7 @@ function checkGameStatus() {
         You won using only ${finalguesses} guess(es).
         Your win streak is ${winStreaks}.
         Your win percentage is ${winPercentage * 100}%.
+        Find more about this strain at ${resultMessages.dataset.address}
         `;
     } else if (parseInt(guessesLeft.textContent) === 0){
         // No guesses left, user lost
@@ -120,7 +122,7 @@ function checkGameStatus() {
         let resultMessage = document.getElementById('winner-subtitle');
         let resultTitle = document.getElementById('winner-title');
         resultTitle.textContent = 'Game Over!';
-        resultMessage.textContent = `The strain was "${word}". Better luck next time!`;
+        resultMessage.textContent = `The strain was "${word}". Find more about this strain at ${resultMessages.dataset.address}. Better luck next time!`;
     }
 }
 
@@ -252,9 +254,36 @@ function saveCookies(winStreaks, totalGuessesUsed, beatPuzzle, today, scoreArray
     let expiryDate = new Date();
     expiryDate.setFullYear(expiryDate.getFullYear() + 10); // Set expiry date to 10 years from now
     document.cookie = `beatPuzzle=${beatPuzzle}; expires=${expiryDate.toUTCString()}`;
-    document.cookie = `totalGuessesUsed=${totalGuessesUsed}; expires=${expiryDate.toUTCString()}`;
     document.cookie = `winStreaks=${winStreaks}; expires=${expiryDate.toUTCString()}`;
     document.cookie = `lastBeatPuzzle=${today}; expires=${expiryDate.toUTCString()}`;
     document.cookie = `scoreArray=${scoreArray}; expires=${expiryDate.toUTCString()}`;
     document.cookie = `winArray=${winArray}; expires=${expiryDate.toUTCString()}`;
 }
+
+function shareGameResult(beatPuzzle, correctGuesses, wrongGuesses, gameMode) {
+    let gameResult = beatPuzzle ? 'You won!' : 'Sorry, you lost.';
+    let totalGuesses = correctGuesses + wrongGuesses;
+    let siteUrl = window.location.href;
+
+    let shareText = `Game Result: ${gameResult}\n` +
+                    `Right Guesses: ${'🟩'.repeat(correctGuesses)}\n` +
+                    `Wrong Guesses: ${'🟥'.repeat(wrongGuesses)}\n` +
+                    `Total Guesses: ${totalGuesses}\n` +
+                    `Game Mode: ${gameMode}\n` +
+                    `Play the game: ${siteUrl}`;
+
+    navigator.clipboard.writeText(shareText).then(function() {
+        console.log('Copying to clipboard was successful!');
+    }, function(err) {
+        console.error('Could not copy text: ', err);
+    });
+}
+
+// Attach this function to the share button
+let shareButton = document.querySelector('.button.is-primary');
+shareButton.addEventListener('click', function() {
+    gameMode = params.get('rowType')
+    let correctGuesses = correctguesses
+    let wrongGuesses = finalguesses - correctguesses
+    shareGameResult(beatPuzzle, correctGuesses, wrongGuesses, gameMode);
+});
