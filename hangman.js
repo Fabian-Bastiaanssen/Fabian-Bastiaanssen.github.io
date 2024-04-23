@@ -41,6 +41,10 @@ if (beatPuzzle & params.get('rowType') !== 'random') {
     buttons.forEach(button => {
         button.disabled = true;
     });
+    titles.forEach(title => {
+            title.textContent = title.dataset.word;
+        });
+    
 }
 
 
@@ -86,6 +90,8 @@ function checkGameStatus() {
     else {
         winStreaks = 0;
     }
+    hangmanWord.innerHTML = `<a href="${resultMessage.dataset.address}">${hangmanWord.textContent}</a>`;
+
     scoreArray.push(totalGuessesUsed);
     winArray.push(beatPuzzle);
     // count the amount of wins in the winArray and divide by the length of the array
