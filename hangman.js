@@ -79,7 +79,7 @@ function checkGameStatus() {
     let params = new URLSearchParams(window.location.search);
     let finalguesses = parseInt(correctguesses) + parseInt(totalguesses) - parseInt(guessesLeft.textContent);
     if (!hangmanWord.textContent.includes('_')) {
-    beatPuzzle = true;
+    beatPuzzle = true;}
     let today = new Date();
         
     let oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
@@ -101,7 +101,7 @@ function checkGameStatus() {
     // save the cookies
     saveCookies(winStreaks, totalGuessesUsed, beatPuzzle, today, scoreArray, winArray);
     if (beatPuzzle) {
-    }
+    
         // All letters are revealed, user won
         resultBox.classList.remove('is-hidden');
         let resultMessage = document.getElementById('winner-subtitle');
