@@ -77,6 +77,7 @@ function checkGameStatus() {
     let guessesLeft = document.getElementById('guesses-left');
     let resultBox = document.getElementById('winner-box');
     guessButton.disabled = true;
+    let resultMessages = document.getElementById('winner-subtitle');
 
 
     let finalguesses = correctguesses + (totalguesses - parseInt(guessesLeft.textContent));
@@ -90,7 +91,7 @@ function checkGameStatus() {
     else {
         winStreaks = 0;
     }
-    hangmanWord.innerHTML = `<a href="${resultMessage.dataset.address}">${hangmanWord.textContent}</a>`;
+    hangmanWord.innerHTML = `<a href="${resultMessages.dataset.address}">${hangmanWord.textContent}</a>`;
 
     scoreArray.push(totalGuessesUsed);
     winArray.push(beatPuzzle);
