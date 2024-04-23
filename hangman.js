@@ -80,7 +80,7 @@ function checkGameStatus() {
 
 
     let finalguesses = correctguesses + (totalguesses - parseInt(guessesLeft.textContent));
-    if (hangmanWord.textContent === word) {
+    if (!hangmanWord.textContent.includes('_')) {
     beatPuzzle = true;
     let today = new Date();
     let oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
