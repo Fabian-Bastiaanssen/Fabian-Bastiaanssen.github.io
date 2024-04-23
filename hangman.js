@@ -152,6 +152,7 @@ buttons.forEach(button => {
             this.style.backgroundColor = 'green';
             this.disabled = true;
             correctguesses++;
+            checkGameStatus()
         }
         // If the letter was not found, turn the button red
         else {
