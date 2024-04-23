@@ -82,7 +82,7 @@ function checkGameStatus() {
     beatPuzzle = true;
     let today = new Date();
     let oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
-    if (today.getTime() - lastBeatPuzzle.getTime() <= oneDay && beatPuzzle && params.get('rowType') !== 'random')) {
+    if (today.getTime() - lastBeatPuzzle.getTime() <= oneDay && beatPuzzle && params.get('rowType') !== 'random') {
         winStreaks++;
         scoreArray.push(finalguesses);
         winArray.push(beatPuzzle);
