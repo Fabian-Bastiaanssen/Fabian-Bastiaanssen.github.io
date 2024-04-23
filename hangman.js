@@ -76,18 +76,19 @@ function checkGameStatus() {
     let resultBox = document.getElementById('winner-box');
     let resultMessages = document.getElementById('winner-subtitle');
 
-
-    let finalguesses = correctguesses + (totalguesses - parseInt(guessesLeft.textContent));
+    let params = new URLSearchParams(window.location.search);
+    let finalguesses = correctguesses + totalguesses - parseInt(guessesLeft.textContent);
     if (!hangmanWord.textContent.includes('_')) {
     beatPuzzle = true;
     let today = new Date();
+        
     let oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
     if (today.getTime() - lastBeatPuzzle.getTime() <= oneDay && beatPuzzle && params.get('rowType') !== 'random') {
         winStreaks++;
         scoreArray.push(finalguesses);
         winArray.push(beatPuzzle);
     }
-    else if (parseInt(guessesLeft.textContent) ===0 && params.get('rowType') !== 'random')){
+    else if (parseInt(guessesLeft.textContent) ===0 && params.get('rowType') !== 'random'){
         winStreaks = 0;
         scoreArray.push(finalguesses);
         winArray.push(beatPuzzle);
