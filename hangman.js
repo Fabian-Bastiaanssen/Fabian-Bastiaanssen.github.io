@@ -280,7 +280,7 @@ function shareGameResult(beatPuzzle, correctGuesses, wrongGuesses, gameMode) {
 }
 
 // Attach this function to the share button
-let shareButton = document.querySelector('.button.is-primary');
+let shareButton = document.querySelector('.share');
 shareButton.addEventListener('click', function() {
     gameMode = params.get('rowType')
     let correctGuesses = correctguesses
