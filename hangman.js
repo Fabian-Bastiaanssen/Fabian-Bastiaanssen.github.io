@@ -77,7 +77,7 @@ function checkGameStatus() {
     let resultMessages = document.getElementById('winner-subtitle');
 
     let params = new URLSearchParams(window.location.search);
-    let finalguesses = correctguesses + totalguesses - parseInt(guessesLeft.textContent);
+    let finalguesses = parseInt(correctguesses) + parseInt(totalguesses) - parseInt(guessesLeft.textContent);
     if (!hangmanWord.textContent.includes('_')) {
     beatPuzzle = true;
     let today = new Date();
@@ -263,7 +263,7 @@ function saveCookies(winStreaks, totalGuessesUsed, beatPuzzle, today, scoreArray
 
 function shareGameResult(beatPuzzle, correctGuesses, wrongGuesses, gameMode) {
     let gameResult = beatPuzzle ? 'You won!' : 'Sorry, you lost.';
-    let totalGuesses = correctGuesses + wrongGuesses;
+    let totalGuesses = parseInt(correctGuesses) + parseInt(wrongGuesses);
     let siteUrl = window.location.href;
 
     let shareText = `Game Result: ${gameResult}\n` +
@@ -286,7 +286,7 @@ shareButton.addEventListener('click', function() {
     gameMode = params.get('rowType')
     let correctGuesses = correctguesses
     let guessesLeft = document.getElementById('guesses-left');
-    let finalguesses = correctguesses + totalguesses - parseInt(guessesLeft.textContent);
+    let finalguesses = parseInt(correctguesses) + parseInt(totalguesses) - parseInt(guessesLeft.textContent);
     let wrongGuesses = finalguesses - correctguesses
     shareGameResult(beatPuzzle, correctGuesses, wrongGuesses, gameMode);
 });
