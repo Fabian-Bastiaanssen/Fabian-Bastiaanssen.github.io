@@ -25,7 +25,7 @@ cookies.forEach(cookie => {
 });
 
 // Check if the user has already beaten the puzzle today
-if (beatPuzzle & params.get('rowType') !== 'random') {
+if (beatPuzzle && params.get('rowType') !== 'random') {
     // Display a message indicating that the user has already beaten the puzzle
     let resultBox = document.getElementById('winner-box');
     let resultMessage = document.getElementById('winner-subtitle');
