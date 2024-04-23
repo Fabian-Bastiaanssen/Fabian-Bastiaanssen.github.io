@@ -1,8 +1,52 @@
 let titles = document.querySelectorAll('.hangman-word');
+let totalguesses = document.getElementById('guesses-left').textContent;
+let correctguesses = 0;
+// Read the values from cookies
+let cookies = document.cookie.split(';');
+let beatPuzzle = false;
+let totalGuessesUsed = 0;
+let winStreaks = 0;
+let lastBeatPuzzle = new Date();
+let scoreArray = [];
+let winArray = [];
+cookies.forEach(cookie => {
+    let [key, value] = cookie.trim().split('=');
+    if (key === 'beatPuzzle') {
+        beatPuzzle = value === 'true';
+    } else if (key === 'totalGuessesUsed') {
+        totalGuessesUsed = parseInt(value);
+    } else if (key === 'winStreaks') {
+        winStreaks = parseInt(value);
+    } else if (key === 'lastBeatPuzzle') {
+        lastBeatPuzzle = new Date(value);
+    } else if (key === 'scoreArray') {
+        scoreArray = value.split(',');
+    } else if (key === 'winArray') {
+        winArray = value.split(',');
+    }
+});
+
+// Check if the user has already beaten the puzzle today
+if (beatPuzzle & params.get('rowType') !== 'random') {
+    // Display a message indicating that the user has already beaten the puzzle
+    let resultBox = document.getElementById('winner-box');
+    let resultMessage = document.getElementById('winner-subtitle');
+    let resultTitle = document.getElementById('winner-title');
+    resultBox.classList.remove('is-hidden');
+    resultTitle.textContent = 'Already Beat the Puzzle';
+    resultMessage.textContent = 'You have already beaten the puzzle today!';
+    let guessButton = document.getElementById('submit-guess');
+    guessButton.disabled = true;
+    let buttons = document.querySelectorAll('.letter');
+    buttons.forEach(button => {
+        button.disabled = true;
+    });
+}
+
 
 // Replace the text in each title with underscores
 titles.forEach(title => {
-    let word = title.textContent;
+    let word = title.dataset.word;
     let underscores = '';
     for (let i = 0; i < word.length; i++) {
         if (word[i] === ' ') {
@@ -20,13 +64,60 @@ let hangmanWord = document.getElementById('hangman-word');
 let word = hangmanWord.dataset.word;
 guessWordInput.setAttribute('maxlength', word.length);
 
+
 // Select all buttons
 let buttons = document.querySelectorAll('.letter');
+function checkGameStatus() {
+    let hangmanWord = document.getElementById('hangman-word');
+    let word = hangmanWord.dataset.word;
+    let guessesLeft = document.getElementById('guesses-left');
+    let resultBox = document.getElementById('winner-box');
+    guessButton.disabled = true;
+
+
+    let finalguesses = correctguesses + (totalguesses - parseInt(guessesLeft.textContent));
+    if (hangmanWord.textContent === word) {
+    beatPuzzle = true;
+    let today = new Date();
+    let oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+    if (today.getTime() - lastBeatPuzzle.getTime() <= oneDay && beatPuzzle) {
+        winStreaks++;
+    }
+    else {
+        winStreaks = 0;
+    }
+    scoreArray.push(totalGuessesUsed);
+    winArray.push(beatPuzzle);
+    // count the amount of wins in the winArray and divide by the length of the array
+    let winPercentage = winArray.filter(Boolean).length / winArray.length;
+    // save the cookies
+    saveCookies(winStreaks, totalGuessesUsed, beatPuzzle, today, scoreArray, winArray);
+    if (beatPuzzle) {
+    }
+        // All letters are revealed, user won
+        resultBox.classList.remove('is-hidden');
+        let resultMessage = document.getElementById('winner-subtitle');
+        let resultTitle = document.getElementById('winner-title');
+
+        resultTitle.textContent = 'Congratulations!';
+        resultMessage.textContent = `
+        You won using only ${finalguesses} guess(es).
+        Your win streak is ${winStreaks}.
+        Your win percentage is ${winPercentage * 100}%.
+        `;
+    } else{
+        // No guesses left, user lost
+        resultBox.classList.remove('is-hidden');
+        let resultMessage = document.getElementById('winner-subtitle');
+        let resultTitle = document.getElementById('winner-title');
+        resultTitle.textContent = 'Game Over!';
+        resultMessage.textContent = `The strain was "${word}". Better luck next time!`;
+    }
+}
 
 // Add event listener to each button
 buttons.forEach(button => {
     button.addEventListener('click', function() {
-
         let letter = this.textContent;
         let found = false;
 
@@ -54,6 +145,7 @@ buttons.forEach(button => {
         if (found) {
             this.style.backgroundColor = 'green';
             this.disabled = true;
+            correctguesses++;
         }
         // If the letter was not found, turn the button red
         else {
@@ -80,11 +172,11 @@ let guessButton = document.getElementById('submit-guess');
 
 // Add event listener to the submit button
 guessButton.addEventListener('click', function() {
-    let guessedWord = guessInput.value.toUpperCase().trim();
+    let guessedWord = guessInput.value.toUpperCase();
     let correctGuess = false;
 
     // Check if the guessed word matches the hangman-word id
-    let hangmanWord = document.getElementById('hangman-word').trim();
+    let hangmanWord = document.getElementById('hangman-word');
     let word = hangmanWord.dataset.word;
     guessWordInput.setAttribute('maxlength', word.length);
     // If the guessed word matches, reveal the word and mark it as correct
@@ -96,9 +188,12 @@ guessButton.addEventListener('click', function() {
     // If the guessed word is correct, fill the input field green and reveal all the words
     if (correctGuess) {
         guessInput.style.backgroundColor = 'green';
+        correctguesses++;
+        checkGameStatus();
         titles.forEach(title => {
             title.textContent = title.dataset.word;
         });
+        guessButton.disabled = true;
     }
     else{
         guessesLeft.textContent = parseInt(guessesLeft.textContent) - 1;
@@ -112,10 +207,44 @@ guessButton.addEventListener('click', function() {
     }
     if (parseInt(guessesLeft.textContent) === 0) {
     // Reveal the words
+    checkGameStatus();
+
     titles.forEach(title => {
         title.textContent = title.dataset.word;
     });
+
 }
     // Clear the input field
     guessInput.value = '';
 });
+// make dismiss-box button work and dismiss the winner-box
+let dismissButton = document.getElementById('dismiss-box');
+dismissButton.addEventListener('click', function() {
+    let resultBox = document.getElementById('winner-box');
+    resultBox.classList.add('is-hidden');
+});
+// make all buttons with random-mode class work and set the rowType parameter to random, reload the page
+let randomButtons = document.querySelectorAll('.random-mode');
+randomButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        let newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('rowType', 'random');
+        window.location.href = newUrl.toString();
+
+    });
+});
+
+
+function saveCookies(winStreaks, totalGuessesUsed, beatPuzzle, today, scoreArray, winArray) {
+
+
+    // Save document.cookie with expiry set to forever
+    let expiryDate = new Date();
+    expiryDate.setFullYear(expiryDate.getFullYear() + 10); // Set expiry date to 10 years from now
+    document.cookie = `beatPuzzle=${beatPuzzle}; expires=${expiryDate.toUTCString()}`;
+    document.cookie = `totalGuessesUsed=${totalGuessesUsed}; expires=${expiryDate.toUTCString()}`;
+    document.cookie = `winStreaks=${winStreaks}; expires=${expiryDate.toUTCString()}`;
+    document.cookie = `lastBeatPuzzle=${today}; expires=${expiryDate.toUTCString()}`;
+    document.cookie = `scoreArray=${scoreArray}; expires=${expiryDate.toUTCString()}`;
+    document.cookie = `winArray=${winArray}; expires=${expiryDate.toUTCString()}`;
+}
