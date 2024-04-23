@@ -285,6 +285,8 @@ let shareButton = document.querySelector('.share');
 shareButton.addEventListener('click', function() {
     gameMode = params.get('rowType')
     let correctGuesses = correctguesses
+    let guessesLeft = document.getElementById('guesses-left');
+    let finalguesses = correctguesses + totalguesses - parseInt(guessesLeft.textContent);
     let wrongGuesses = finalguesses - correctguesses
     shareGameResult(beatPuzzle, correctGuesses, wrongGuesses, gameMode);
 });
