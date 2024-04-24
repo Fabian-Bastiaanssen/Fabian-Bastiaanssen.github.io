@@ -11,9 +11,7 @@ let scoreArray = [];
 let winArray = [];
 cookies.forEach(cookie => {
     let [key, value] = cookie.trim().split('=');
-    if (key === 'beatPuzzle') {
-        beatPuzzle = value === 'true';
-    } else if (key === 'winStreaks') {
+    } if (key === 'winStreaks') {
         winStreaks = parseInt(value);
     } else if (key === 'lastBeatPuzzle') {
         lastBeatPuzzle = new Date(value);
